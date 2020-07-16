@@ -40,7 +40,9 @@ public class Grid : MonoBehaviour
 
         for(var x = startCell.x; x <= endCell.x; x++) {
             for(var y = startCell.y; y <= endCell.y; y++) {
-                GridContent[x, y] = type;
+                if(x >= 0 && x < Cols && y >= 0 && y < Rows) {
+                    GridContent[x, y] = type;
+                }
             }
         }
     }
@@ -62,32 +64,6 @@ public class Grid : MonoBehaviour
         var xInterval = Collider.bounds.size.x / Rows;
         var zInterval = Collider.bounds.size.z / Cols;
 
-        return new Vector2(xStart + cell.x * xInterval, zStart + cell.y * zInterval);
-    }
-
-    private void OnDrawGizmos() {
-        var Rows = (int) Collider.bounds.size.x;
-        var Cols = (int) Collider.bounds.size.z;
-
-        Gizmos.color = Color.red;
-
-        var xStart = transform.position.x - Collider.bounds.extents.x;
-        var xEnd = transform.position.x + Collider.bounds.extents.x;
-
-        var zStart = transform.position.z - Collider.bounds.extents.z;
-        var zEnd = transform.position.z + Collider.bounds.extents.z;
-
-        var xInterval = Collider.bounds.size.x / Rows;
-        var zInterval = Collider.bounds.size.z / Cols;
-
-        var y = transform.position.y + 0.01f;
-
-        for(int i = 0; i < Rows + 1; i++) {
-            Gizmos.DrawLine(new Vector3(xStart + i * xInterval, y, zStart), new Vector3(xStart + i * xInterval, y, zEnd));
-        }
-
-        for(int i = 0; i < Cols + 1; i++) {
-            Gizmos.DrawLine(new Vector3(xStart, y, zStart + i * zInterval), new Vector3(xEnd, y, zStart + i * zInterval));
-        }
+        return new Vector2(xStart + 0.5f + cell.x * xInterval, zStart + 0.5f + cell.y * zInterval);
     }
 }
