@@ -170,6 +170,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &60392196
 CapsuleCollider:
@@ -541,6 +542,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &177282381
 CapsuleCollider:
@@ -652,6 +654,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &220637543
 CapsuleCollider:
@@ -763,6 +766,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &228285731
 CapsuleCollider:
@@ -874,6 +878,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &266654255
 CapsuleCollider:
@@ -985,6 +990,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &287004016
 CapsuleCollider:
@@ -1860,6 +1866,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &703093511
 CapsuleCollider:
@@ -2237,6 +2244,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &838603506
 CapsuleCollider:
@@ -2348,6 +2356,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &891560820
 CapsuleCollider:
@@ -2533,6 +2542,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &902466318
 CapsuleCollider:
@@ -2644,6 +2654,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &918920547
 CapsuleCollider:
@@ -2784,8 +2795,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -578.83936, y: -231.43, z: 93.705}
+  m_LocalRotation: {x: 0.40314814, y: 0.35299098, z: -0.17216522, w: 0.8265762}
+  m_LocalPosition: {x: -607.12555, y: -211.53539, z: 128.46866}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1534225893}
@@ -2872,6 +2883,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1060879107
 CapsuleCollider:
@@ -2983,6 +2995,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1069486171
 CapsuleCollider:
@@ -3094,6 +3107,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1094115550
 CapsuleCollider:
@@ -3205,6 +3219,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1098489402
 CapsuleCollider:
@@ -3391,6 +3406,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1116062107
 CapsuleCollider:
@@ -3576,6 +3592,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1185789809
 CapsuleCollider:
@@ -3687,6 +3704,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1199538633
 CapsuleCollider:
@@ -3859,6 +3877,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!1 &1256664924
 GameObject:
@@ -3909,6 +3928,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1256664927
 CapsuleCollider:
@@ -4020,6 +4040,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1302349530
 CapsuleCollider:
@@ -4498,6 +4519,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1479483030
 CapsuleCollider:
@@ -4817,6 +4839,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1569668365
 CapsuleCollider:
@@ -5232,6 +5255,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1789122607
 CapsuleCollider:
@@ -5343,6 +5367,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1799763502
 CapsuleCollider:
@@ -5454,6 +5479,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1890160230
 CapsuleCollider:
@@ -5565,6 +5591,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1902094998
 CapsuleCollider:
@@ -5712,6 +5739,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1954168620
 CapsuleCollider:
@@ -5859,6 +5887,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &1962119187
 CapsuleCollider:
@@ -6120,6 +6149,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &2050435815
 CapsuleCollider:
@@ -6231,6 +6261,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &2079895548
 CapsuleCollider:
@@ -6342,6 +6373,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &2097496574
 CapsuleCollider:
@@ -6453,6 +6485,7 @@ MonoBehaviour:
   CurrentCell: {x: 0, y: 0}
   PreviousCell: {x: 0, y: 0}
   PreviousPreviousCell: {x: 0, y: 0}
+  TargetCell: {x: -1, y: -1}
   previousPositions: []
 --- !u!136 &2130002841
 CapsuleCollider:
