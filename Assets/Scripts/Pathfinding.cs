@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class Pathfinding {
-    private static HashSet<Vector2Int> visitedCells = new HashSet<Vector2Int>();
+    private static bool[,] visitedCells;
     private static Vector2Int nullCell = new Vector2Int(-1, -1);
     public static float[,] CreateDijkstraField(int cols, int rows, GridElements[,] gridElements) {
-        visitedCells.Clear();
+        visitedCells = new bool[cols, rows];
         var field = new float[cols, rows];
 
         for(var x = 0; x < cols; x++) {
@@ -25,7 +25,7 @@ public static class Pathfinding {
             if(cell == nullCell) {
                 break;
             }
-            visitedCells.Add(cell);
+            visitedCells[cell.x, cell.y] = true;
             var neighbors = GetAllNeighbors(cell, cols, rows, gridElements);
             foreach(var neighbor in neighbors) {
                 var newDistance = field[cell.x, cell.y] + Vector2Int.Distance(cell, neighbor); 
@@ -64,9 +64,8 @@ public static class Pathfinding {
 
         for(var x = 0; x < cols; x++) {
             for(var y = 0; y < rows; y++) {
-                var potentialCell = new Vector2Int(x, y);
-                if(field[x, y] < currentMinDistance && !visitedCells.Contains(potentialCell)) {
-                    currentSelectedCell = potentialCell;
+                if(field[x, y] < currentMinDistance && !visitedCells[x, y]) {
+                    currentSelectedCell.Set(x, y);
                     currentMinDistance = field[x, y];
                 }
             }

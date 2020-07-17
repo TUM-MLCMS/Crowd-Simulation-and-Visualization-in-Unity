@@ -18,7 +18,9 @@ public class Simulation : MonoBehaviour {
     }
 
     private void Start() {
+        var start = Time.realtimeSinceStartup;
         dijkstraField = Pathfinding.CreateDijkstraField(Grid.Cols, Grid.Rows, Grid.GridContent);
+        Debug.Log($"It takes: {Time.realtimeSinceStartup - start} seconds");
         foreach(var i in dijkstraField) {
             if(i > dijkstraMax && i < Mathf.Infinity) {
                 dijkstraMax = i;
