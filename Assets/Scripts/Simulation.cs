@@ -4,13 +4,18 @@ using System.Collections.Generic;
 
 public class Simulation : MonoBehaviour {
     public Grid Grid;
-    public Pedestrian[] Pedestrians;
+    public GameObject PedestrianContainer;
     public bool IsSimulating {get; private set;}
     public int CurrentFrame = 0;
     public int RecordedFrames = 0;
+    [HideInInspector] public Pedestrian[] Pedestrians;
     private float[,] dijkstraField;
     private float dijkstraMax = 0f;
     private int[,] pedestrianCounts;
+
+    private void Awake() {
+        Pedestrians = PedestrianContainer.GetComponentsInChildren<Pedestrian>();
+    }
 
     private void Start() {
         dijkstraField = Pathfinding.CreateDijkstraField(Grid.Cols, Grid.Rows, Grid.GridContent);
@@ -127,19 +132,23 @@ public class Simulation : MonoBehaviour {
         }
     }
 
-    private void OnDrawGizmos() {
-        if(Application.isPlaying) {
+    private void Update() {
+        if(UIManager.Instance.ShowDijkstraField) {
+            var colors = new Color[Grid.MeshFilter.mesh.vertexCount];
             for(var x = 0; x < Grid.Cols; x++) {
                 for(var y = 0; y < Grid.Rows; y++) {
-                    Gizmos.color = Color.Lerp(Color.black, Color.white, dijkstraField[x, y]/dijkstraMax);
-                    if(pedestrianCounts[x, y] >= 1) {
-                        Gizmos.color = Color.red;
-                    }
-                    var position2D = Grid.GetCoordinateFromCell(new Vector2Int(x, y));
-                    var position = new Vector3(position2D.x, 0, position2D.y);
-                    //Gizmos.DrawCube(position, new Vector3(1, 0.1f, 1));
+                    var color = Color.Lerp(Color.black, Color.white, dijkstraField[x, y]/dijkstraMax);
+                    
+                    var val = y * Grid.Cols + x;
+                    colors[val * 6] = color;
+                    colors[val * 6 + 1] = color;
+                    colors[val * 6 + 2] = color;
+                    colors[val * 6 + 3] = color;
+                    colors[val * 6 + 4] = color;
+                    colors[val * 6 + 5] = color;
                 }
             }
+            Grid.MeshFilter.mesh.SetColors(colors);
         }   
     }
 }

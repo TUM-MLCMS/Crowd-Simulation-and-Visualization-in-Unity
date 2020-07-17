@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour {
 
     public void ToggleDijkstraField(bool value) {
         ShowDijkstraField = value;
+        Simulation.Grid.ResetMeshColors(value);
     }
 
     public void OnSimulationControlClicked() {
