@@ -12,6 +12,7 @@ public class Simulation : MonoBehaviour {
     private float[,] dijkstraField;
     private float dijkstraMax = 0f;
     private int[,] pedestrianCounts;
+    private int[,] targetCounts;
 
     private void Awake() {
         Pedestrians = PedestrianContainer.GetComponentsInChildren<Pedestrian>();
@@ -30,6 +31,7 @@ public class Simulation : MonoBehaviour {
     }
 
     private void SetupPedestrianDensityField() {
+        targetCounts = new int[Grid.Cols, Grid.Rows];
         pedestrianCounts = new int[Grid.Cols, Grid.Rows];
         foreach(var pedestrian in Pedestrians) {
             var cell = Grid.GetCellCoordinate(pedestrian.transform.position);
@@ -51,6 +53,11 @@ public class Simulation : MonoBehaviour {
         RecordedFrames++;
 
         foreach(var pedestrian in Pedestrians) {
+            if(pedestrian.TargetCell != Vector2Int.one * -1) {
+                targetCounts[pedestrian.TargetCell.x, pedestrian.TargetCell.y] -=1;
+                pedestrian.TargetCell = Vector2Int.one * -1;
+            }
+
             var pos = pedestrian.transform.position;
 
             var cell = Grid.GetCellCoordinate(pos);
@@ -60,10 +67,6 @@ public class Simulation : MonoBehaviour {
                 pedestrian.PreviousPreviousCell = pedestrian.PreviousCell;
                 pedestrian.PreviousCell = pedestrian.CurrentCell;
                 pedestrian.CurrentCell = cell;
-            }
-            
-            if(dijkstraField[cell.x, cell.y] <= 0.0001f) {
-                continue;
             }
 
             var neighbors = Pathfinding.GetAllNeighbors(cell, Grid.Cols, Grid.Rows, Grid.GridContent);
@@ -80,9 +83,9 @@ public class Simulation : MonoBehaviour {
                     if(neighbor == pedestrian.PreviousCell && tries < 2) {
                         continue;
                     }
-                    if(dijkstraField[neighbor.x, neighbor.y] < currentMinDistance && pedestrianCounts[neighbor.x, neighbor.y] == 0) {
+                    if((dijkstraField[neighbor.x, neighbor.y] + targetCounts[neighbor.x, neighbor.y] * 0.1f) < currentMinDistance && pedestrianCounts[neighbor.x, neighbor.y] == 0) {
                         currentSelectedCell = neighbor;
-                        currentMinDistance = dijkstraField[neighbor.x, neighbor.y];
+                        currentMinDistance = dijkstraField[neighbor.x, neighbor.y] + targetCounts[neighbor.x, neighbor.y] * 0.1f;
                     }
                 }
                 tries ++;
@@ -99,6 +102,8 @@ public class Simulation : MonoBehaviour {
                     }
                 }
 
+                targetCounts[currentSelectedCell.x, currentSelectedCell.y] ++;
+                pedestrian.TargetCell = currentSelectedCell;
                 var targetPos = Grid.GetCoordinateFromCell(currentSelectedCell);
                 directionVector += new Vector3(targetPos.x - pos.x, 0, targetPos.y - pos.z);
             }

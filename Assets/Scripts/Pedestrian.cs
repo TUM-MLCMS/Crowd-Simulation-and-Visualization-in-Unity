@@ -6,6 +6,8 @@ public class Pedestrian : MonoBehaviour {
     [HideInInspector] public Vector2Int CurrentCell;
     [HideInInspector] public Vector2Int PreviousCell;
     [HideInInspector] public Vector2Int PreviousPreviousCell;
+    [HideInInspector] public Vector2Int TargetCell = new Vector2Int(-1, -1);
+    
     public List<Vector3> previousPositions = new List<Vector3>();
 
     public void AddToPositionHistory(Vector3 pos) {
