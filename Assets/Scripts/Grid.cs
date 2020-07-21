@@ -52,13 +52,13 @@ public class Grid : MonoBehaviour
             var x = xStart + (i % Cols) * xInterval;
             var y = zStart + (i / Cols) * zInterval;
 
-            vertices[counter]     = new Vector3(x, 0, y);
-            vertices[counter + 1] = new Vector3(x, 0, y + zInterval);
-            vertices[counter + 2] = new Vector3(x + xInterval, 0, y);
+            vertices[counter].Set(x, 0, y);
+            vertices[counter + 1].Set(x, 0, y + zInterval);
+            vertices[counter + 2].Set(x + xInterval, 0, y);
 
-            vertices[counter + 3] = new Vector3(x, 0, y + zInterval);
-            vertices[counter + 4] = new Vector3(x + xInterval, 0, y + zInterval);
-            vertices[counter + 5] = new Vector3(x + xInterval, 0, y);
+            vertices[counter + 3].Set(x, 0, y + zInterval);
+            vertices[counter + 4].Set(x + xInterval, 0, y + zInterval);
+            vertices[counter + 5].Set(x + xInterval, 0, y);
             counter += 6;
         }
 

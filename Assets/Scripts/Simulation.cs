@@ -11,8 +11,7 @@ public class Simulation : MonoBehaviour {
     [HideInInspector] public Pedestrian[] Pedestrians;
     private float[,] dijkstraField;
     private float dijkstraMax = 0f;
-    private int[,] pedestrianCounts;
-    private int[,] targetCounts;
+    private List<Pedestrian>[,] pedestrianField;
 
     private void Awake() {
         Pedestrians = PedestrianContainer.GetComponentsInChildren<Pedestrian>();
@@ -31,15 +30,16 @@ public class Simulation : MonoBehaviour {
     }
 
     private void SetupPedestrianDensityField() {
-        targetCounts = new int[Grid.Cols, Grid.Rows];
-        pedestrianCounts = new int[Grid.Cols, Grid.Rows];
+        pedestrianField = new List<Pedestrian>[Grid.Cols, Grid.Rows];
+        for(var x = 0; x < Grid.Cols; x++) {
+            for(var y = 0; y < Grid.Rows; y++) {
+                pedestrianField[x, y] = new List<Pedestrian>();
+            }
+        }
         foreach(var pedestrian in Pedestrians) {
             var cell = Grid.GetCellCoordinate(pedestrian.transform.position);
-            pedestrianCounts[cell.x, cell.y] ++;
+            pedestrianField[cell.x, cell.y].Add(pedestrian);
             pedestrian.CurrentCell = cell;
-            pedestrian.PreviousCell = cell;
-            pedestrian.PreviousPreviousCell = cell;
-
             pedestrian.AddToPositionHistory(pedestrian.transform.position);
         }
     }
@@ -53,62 +53,62 @@ public class Simulation : MonoBehaviour {
         RecordedFrames++;
 
         foreach(var pedestrian in Pedestrians) {
-            if(pedestrian.TargetCell != Vector2Int.one * -1) {
-                targetCounts[pedestrian.TargetCell.x, pedestrian.TargetCell.y] -=1;
-                pedestrian.TargetCell = Vector2Int.one * -1;
-            }
-
             var pos = pedestrian.transform.position;
-
             var cell = Grid.GetCellCoordinate(pos);
+
             if(pedestrian.CurrentCell != cell) {
-                pedestrianCounts[cell.x, cell.y] ++;
-                pedestrianCounts[pedestrian.CurrentCell.x, pedestrian.CurrentCell.y] --;
-                pedestrian.PreviousPreviousCell = pedestrian.PreviousCell;
-                pedestrian.PreviousCell = pedestrian.CurrentCell;
+                pedestrianField[cell.x, cell.y].Add(pedestrian);
+                pedestrianField[pedestrian.CurrentCell.x, pedestrian.CurrentCell.y].Remove(pedestrian);
                 pedestrian.CurrentCell = cell;
             }
 
             var neighbors = Pathfinding.GetAllNeighbors(cell, Grid.Cols, Grid.Rows, Grid.GridContent);
 
-            float currentMinDistance = Mathf.Infinity;
+            float currentMinCost = Mathf.Infinity;
             Vector2Int currentSelectedCell = Vector2Int.one * -1;
             
-            int tries = 0;
-            while(tries < 3 && currentSelectedCell == Vector2Int.one * -1) {
-                foreach(var neighbor in neighbors) {
-                    if(neighbor == pedestrian.PreviousPreviousCell && tries < 1) {
-                        continue;
-                    }
-                    if(neighbor == pedestrian.PreviousCell && tries < 2) {
-                        continue;
-                    }
-                    if((dijkstraField[neighbor.x, neighbor.y] + targetCounts[neighbor.x, neighbor.y] * 0.1f) < currentMinDistance && pedestrianCounts[neighbor.x, neighbor.y] == 0) {
-                        currentSelectedCell = neighbor;
-                        currentMinDistance = dijkstraField[neighbor.x, neighbor.y] + targetCounts[neighbor.x, neighbor.y] * 0.1f;
-                    }
+            foreach(var neighbor in neighbors) {
+                var cost = GetCost(neighbor, pedestrian);
+
+                if(cost < currentMinCost) {
+                    currentSelectedCell = neighbor;
+                    currentMinCost = cost;
+                    pedestrian.TargetCellScore = cost;
                 }
-                tries ++;
             }
             
+            float currentNearestPedDistance = Mathf.Infinity;
             var directionVector = Vector3.zero;
             if(currentSelectedCell != Vector2Int.one * -1 && currentSelectedCell != cell) {
-                if(Mathf.Abs(currentSelectedCell.x - cell.x) + Mathf.Abs(currentSelectedCell.y - cell.y) != 1) {
-                    foreach(var neighbor in neighbors) {
-                        if(pedestrianCounts[neighbor.x, neighbor.y] > 0) {
-                            var avoidPos = Grid.GetCoordinateFromCell(neighbor);
-                            directionVector -= (new Vector3(avoidPos.x - pos.x, 0, avoidPos.y - pos.z)) / Mathf.Sqrt(2);
+                pedestrian.TargetCell = currentSelectedCell;
+                var targetPos = Grid.GetCoordinateFromCell(currentSelectedCell);
+
+                directionVector += new Vector3(targetPos.x - pos.x, 0, targetPos.y - pos.z);
+
+                foreach(var neighbor in neighbors) {
+                    foreach(var pedestrian2 in pedestrianField[neighbor.x, neighbor.y]) {
+                        if(pedestrian == pedestrian2) {
+                            continue;
+                        }
+
+                        if(pedestrian2.NearestPedestrian == pedestrian) {
+                            continue;
+                        }
+                        
+                        var dist1 = Vector3.Distance(pedestrian2.transform.position, pedestrian.transform.position);
+                        var dist2 = Vector3.Distance(pedestrian2.transform.position, pedestrian.transform.position + directionVector.normalized * 0.1f);
+                       
+                        if(dist2 < dist1 && dist1 < currentNearestPedDistance) {
+                            currentNearestPedDistance = dist1;
+                            pedestrian.NearestPedestrian = pedestrian2;
                         }
                     }
                 }
-
-                targetCounts[currentSelectedCell.x, currentSelectedCell.y] ++;
-                pedestrian.TargetCell = currentSelectedCell;
-                var targetPos = Grid.GetCoordinateFromCell(currentSelectedCell);
-                directionVector += new Vector3(targetPos.x - pos.x, 0, targetPos.y - pos.z);
+                pedestrian.CurrentDistance = currentNearestPedDistance;
             }
             
-            pedestrian.transform.position = pos + directionVector.normalized / 10f;
+            pedestrian.CurrentSpeed = Mathf.Max(Mathf.Min((currentNearestPedDistance - 1f) / 10f, 0.1f), 0);
+            pedestrian.transform.position = pos + directionVector.normalized * pedestrian.CurrentSpeed;
             pedestrian.AddToPositionHistory(pedestrian.transform.position);
         }
     }
@@ -124,6 +124,7 @@ public class Simulation : MonoBehaviour {
             }
             SetupPedestrianDensityField();
             CurrentFrame = 0;
+            RecordedFrames = 0;
             IsSimulating = true;
         }
     }
@@ -137,6 +138,24 @@ public class Simulation : MonoBehaviour {
         foreach(var pedestrian in Pedestrians) {
             pedestrian.transform.position = pedestrian.previousPositions[Mathf.Min(pedestrian.previousPositions.Count - 1, CurrentFrame)];
         }
+    }
+
+    private float GetCost(Vector2Int pos, Pedestrian pedestrian) {
+        var neighbors = Pathfinding.GetAllNeighbors(pos, Grid.Cols, Grid.Rows, Grid.GridContent);
+        var extraCosts = 0f;
+
+        var targetPos = Grid.GetCoordinateFromCell(pos);
+        var pedPos = pedestrian.transform.position;
+        var velocity = new Vector3(targetPos.x - pedPos.x, 0, targetPos.y - pedPos.z).normalized * 0.1f;
+        var newPos = pedPos + velocity;
+
+        foreach(var neighbor in neighbors) {            
+            foreach(var pedestrian2 in pedestrianField[neighbor.x, neighbor.y]) {
+                extraCosts += 5 * Mathf.Exp(-1 * Vector3.Distance(pedestrian2.transform.position, newPos));
+            }
+        }
+
+        return dijkstraField[pos.x, pos.y] + extraCosts;
     }
 
     private void Update() {
