@@ -7,6 +7,10 @@ public class LineDrawer : MonoBehaviour {
     public Material TrajectoryMaterial;
     public Material GridMaterial;
 
+    /**
+    *** This function runs after Unity draws all the objects in the scene.
+    *** Rendering lines for Trajectories and Grid if they are selected in UI. 
+    **/ 
     public void OnPostRender() {
         TrajectoryMaterial.SetPass(0);
 

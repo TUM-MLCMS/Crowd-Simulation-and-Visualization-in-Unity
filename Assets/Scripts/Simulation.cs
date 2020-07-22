@@ -13,10 +13,17 @@ public class Simulation : MonoBehaviour {
     private float dijkstraMax = 0f;
     private List<Pedestrian>[,] pedestrianField;
 
+    /**
+    *** Before anything else, this code finds all pedestrians with Pedestrian component
+    **/
     private void Awake() {
         Pedestrians = PedestrianContainer.GetComponentsInChildren<Pedestrian>();
     }
 
+    /**
+    *** Creates dijkstra distance field
+    *** Also finds the maximum value in dijkstra field, later to be used for dijkstra distance field visualization
+    **/
     private void Start() {
         var start = Time.realtimeSinceStartup;
         dijkstraField = Pathfinding.CreateDijkstraField(Grid.Cols, Grid.Rows, Grid.GridContent);
@@ -29,6 +36,9 @@ public class Simulation : MonoBehaviour {
         SetupPedestrianDensityField();
     }
 
+    /**
+    *** Creates a 2D array of Pedestrian Lists to store which pedestrians are registered to cells.
+    **/
     private void SetupPedestrianDensityField() {
         pedestrianField = new List<Pedestrian>[Grid.Cols, Grid.Rows];
         for(var x = 0; x < Grid.Cols; x++) {
@@ -44,6 +54,14 @@ public class Simulation : MonoBehaviour {
         }
     }
     
+    /**
+    *** Runs 50 times a second.
+    *** Processes every pedestrian.
+    *** Gets all the neighbors of a pedestrian, calls the utility function for each one of them.
+    *** Decides on one of the neighbors to move towards, creates a direction vector.
+    *** Adjusts speed if it's too close to another pedestrian
+    *** Saves its new position to its history
+    **/
     private void FixedUpdate() {
         if(!IsSimulating) {
             return;
@@ -73,7 +91,6 @@ public class Simulation : MonoBehaviour {
                 if(cost < currentMinCost) {
                     currentSelectedCell = neighbor;
                     currentMinCost = cost;
-                    pedestrian.TargetCellScore = cost;
                 }
             }
             
@@ -104,7 +121,6 @@ public class Simulation : MonoBehaviour {
                         }
                     }
                 }
-                pedestrian.CurrentDistance = currentNearestPedDistance;
             }
             
             pedestrian.CurrentSpeed = Mathf.Max(Mathf.Min((currentNearestPedDistance - 1f) / 10f, 0.1f), 0);
@@ -140,6 +156,11 @@ public class Simulation : MonoBehaviour {
         }
     }
 
+    /**
+    *** Utility (cost) function.
+    *** Calculate the distance to all other pedestrians if the current pedestrian decides to the "pos"
+    *** Sum it with dijkstra distance field value.
+    **/
     private float GetCost(Vector2Int pos, Pedestrian pedestrian) {
         var neighbors = Pathfinding.GetAllNeighbors(pos, Grid.Cols, Grid.Rows, Grid.GridContent);
         var extraCosts = 0f;
@@ -158,6 +179,11 @@ public class Simulation : MonoBehaviour {
         return dijkstraField[pos.x, pos.y] + extraCosts;
     }
 
+    /**
+    *** Used to visualize dijkstra field on the grid.
+    *** This doesn't have to be in a Update function.
+    *** But we used it to highlight cells that have a pedestrian on them. 
+    **/
     private void Update() {
         if(UIManager.Instance.ShowDijkstraField) {
             var colors = new Color[Grid.MeshFilter.mesh.vertexCount];

@@ -14,6 +14,13 @@ public class Grid : MonoBehaviour
     public Material DefaultMaterial;
     public Material DijkstraMaterial;
 
+    /**
+    *** This function runs when the software is first started. 
+    *** Calculates number of Columns and Rows
+    *** Calls GenerateCustomMesh
+    *** Creates the GridContent 2D array for storing the scenario structure
+    *** Calls AddElement for all simulation elements (obstacles and targets) to mark the correct cells.
+    **/ 
     private void Awake() {
         Cols = (int) Collider.bounds.size.x;
         Rows = (int) Collider.bounds.size.z;
@@ -34,6 +41,9 @@ public class Grid : MonoBehaviour
         }
     }
 
+    /**
+    *** Creates a mesh with same amount of quads as cells.
+    **/ 
     private void GenerateCustomMesh() {
         var mesh = new Mesh();
         Vector3[] vertices = new Vector3[Cols * Rows * 6];
@@ -73,6 +83,9 @@ public class Grid : MonoBehaviour
         MeshFilter.mesh = mesh;
     }
 
+    /**
+    *** Finds the corresponding cells for simulation elements and marks them in the array.
+    **/ 
     public void AddElement(Collider col, GridElements type) {
         var xStart = col.transform.position.x - col.bounds.extents.x;
         var xEnd = col.transform.position.x + col.bounds.extents.x;
@@ -92,6 +105,9 @@ public class Grid : MonoBehaviour
         }
     }
 
+    /**
+    *** Convert 3D Unity world position to cell position
+    **/ 
     public Vector2Int GetCellCoordinate(Vector3 position) {
         var xStart = transform.position.x - Collider.bounds.extents.x;
         var zStart = transform.position.z - Collider.bounds.extents.z;
@@ -102,6 +118,9 @@ public class Grid : MonoBehaviour
         return new Vector2Int(x, z);
     }
 
+    /**
+    *** Convert cell position to 3D Unity world position (center of the cell in world space)
+    **/ 
     public Vector2 GetCoordinateFromCell(Vector2Int cell) {
         var xStart = transform.position.x - Collider.bounds.extents.x;
         var zStart = transform.position.z - Collider.bounds.extents.z;
@@ -112,6 +131,9 @@ public class Grid : MonoBehaviour
         return new Vector2(xStart + 0.5f + cell.x * xInterval, zStart + 0.5f + cell.y * zInterval);
     }
 
+    /**
+    *** Resets the vertex colors to white
+    **/ 
     public void ResetMeshColors(bool isDijkstra) {
         var colors = new Color[MeshFilter.mesh.vertexCount];
         for(var i = 0; i < MeshFilter.mesh.vertexCount; i++) {

@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/**
+*** This class contains everything related to Dijkstra's Algorithm.
+**/
 public static class Pathfinding {
     private static bool[,] visitedCells;
     private static Vector2Int nullCell = new Vector2Int(-1, -1);

@@ -20,6 +20,13 @@ public class UIManager : MonoBehaviour {
         PlaybackController.SetActive(false);
     }
 
+    private void Update() {
+        // Takes a screenshot
+        if (Input.GetKeyDown(KeyCode.P)) {
+            ScreenCapture.CaptureScreenshot(Time.frameCount + ".png");
+        }
+    }
+
     public void ToggleTrajectories(bool value) {
         ShowTrajectories = value;
     }
@@ -46,6 +53,10 @@ public class UIManager : MonoBehaviour {
         SimulationControlButtonTest.text = Simulation.IsSimulating ? "End Simulating" : "Start Simulating";
     }
 
+    /**
+    *** Called whenever Playback Slider is changed
+    *** Maps value between 0 and 1 to 0 and latest recorded frame.
+    **/
     public void OnPlaybackSliderChanged(float value) {
         var targetFrame = (int) (value * Simulation.RecordedFrames);
         FrameNumber.text = targetFrame.ToString();
